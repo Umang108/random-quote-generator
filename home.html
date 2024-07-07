@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/57b7889bc6.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Queots</title>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="inner">
+            <div class="box">
+                <p class="number">
+                    <img src="logo.png" alt="twiter" title="TweetMe" id="tweetMe" />
+                </p>
+                <div class="text">
+                    <i class="start-quote fas fa-quote-left  " id="A"></i>
+                    <p id="quotes" class="quotes"></p>
+                    <p id="author" class="author"></p>
+                </div>
+
+                <label class="button">
+                    <p id="newQ">new Quotes</p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const newQ = document.getElementById("newQ");
+        const tweetMe = document.getElementById("tweetMe");
+
+        let realData = "";
+        quotesdata = "";
+
+        const tweetNow = () => {
+            let tweetPost = `https://twitter.com/intent/tweet?text=${quotesdata.text} ${quotesdata.author}`;
+            window.open(tweetPost);
+        }
+        const getnewQuotes = () => {
+            let rnum = Math.floor(Math.random() * 10);
+            quotesdata = realData[rnum];
+
+            quotes.innerText = `${quotesdata.text}`;
+            quotesdata.author == null
+                ? author.innerText = "UnKnown"
+                : author.innerText = `${quotesdata.author}`;
+        };
+
+        const getQuotes = async () => {
+            const api = "https://type.fit/api/quotes";
+            try {
+                let data = await fetch(api);
+                realData = await data.json();
+                getnewQuotes();
+                // console.log(realData.length);
+            } catch (error) { }
+        };
+        tweetMe.addEventListener("click", tweetNow)
+        newQ.addEventListener("click", getnewQuotes);
+
+        getQuotes();
+    </script>
+</body>
+
+</html>
